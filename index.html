@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Jeevan Traders | Wholesale & Retail</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body { font-family:'Poppins',sans-serif; background:#fff; color:#333; }
+a { text-decoration:none; cursor:pointer; }
+
+/* HEADER */
+header { background:#1d3557; color:#fff; padding:1rem 5%; display:flex; justify-content:space-between; align-items:center; }
+header .logo { font-size:1.8rem; font-weight:700; }
+header nav a { margin-left:25px; color:#fff; font-size:1rem; font-weight:500; }
+header nav a:hover { color:#e63946; }
+
+/* HERO */
+.hero { background: linear-gradient(rgba(0,0,0,0.6),rgba(0,0,0,0.6)), url('https://images.unsplash.com/photo-1504384308090-c894fdcc538d'); background-size:cover; background-position:center; height:60vh; display:flex; flex-direction:column; justify-content:center; align-items:center; text-align:center; padding:0 20px; }
+.hero h1 { font-size:3rem; color:#fff; margin-bottom:0.6rem; }
+.hero p { font-size:1.2rem; color:#ddd; }
+.hero .btn { margin-top:1.5rem; padding:12px 28px; background:#e63946; color:#fff; font-weight:600; border-radius:5px; }
+.hero .btn:hover { background:#c1121f; }
+
+/* CATEGORIES */
+.categories { padding:2rem 5%; display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:25px; }
+.categories .card { background:#fff; border-radius:10px; box-shadow:0 4px 12px rgba(0,0,0,0.08); transition:0.3s; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:20px; height:180px; text-align:center; cursor:pointer; }
+.categories .card:hover { transform:translateY(-5px); }
+.categories .card i { font-size:3rem; color:#1d3557; margin-bottom:10px; }
+.categories .card h3 { font-size:1.2rem; font-weight:600; color:#333; }
+
+/* CART */
+.cart-panel { position:fixed; right:-400px; top:0; width:400px; height:100%; background:#fff; box-shadow:-3px 0 15px rgba(0,0,0,0.2); transition:0.4s; padding:20px; z-index:1000; overflow-y:auto; }
+.cart-panel.active { right:0; }
+.cart-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+.cart-header h2 { font-size:1.5rem; }
+.cart-header .close-btn { font-size:1.3rem; cursor:pointer; color:#444; }
+.cart-list .item { display:flex; justify-content:space-between; padding:12px 0; border-bottom:1px solid #eee; }
+.cart-total { margin-top:20px; font-size:1.2rem; font-weight:600; }
+.cart-checkout button { width:100%; padding:10px; background:#e63946; border:none; color:#fff; font-size:1rem; font-weight:700; border-radius:5px; cursor:pointer; margin-top:10px; }
+.cart-checkout button:hover { background:#c1121f; }
+
+/* CONTACT */
+.contact-section { padding:3rem 5%; background:#fff; text-align:center; }
+.contact-section h2 { font-size:2rem; margin-bottom:1rem; }
+.contact-section p { font-size:1.1rem; margin:6px 0; }
+
+/* FOOTER */
+footer { background:#1d3557; color:#fff; text-align:center; padding:1.8rem 5%; margin-top:2rem; }
+footer p { margin:6px 0; }
+
+/* RESPONSIVE */
+@media(max-width:768px) { .categories { grid-template-columns:repeat(auto-fill,minmax(180px,1fr)); } .cart-panel{width:100%;} }
+</style>
+</head>
+<body>
+
+<header>
+<div class="logo">Jeevan Traders</div>
+<nav>
+<a onclick="scrollToSection('categories')">Categories</a>
+<a onclick="scrollToSection('contact')">Contact</a>
+<a onclick="toggleCart()"><i class="fas fa-shopping-cart"></i> Cart (<span id="cartCount">0</span>)</a>
+</nav>
+</header>
+
+<section class="hero">
+<h1>Shop Daily Goods in Rajapur</h1>
+<p>Groceries, footwear, stationery, snacks, beverages, fuel & household items.</p>
+<a class="btn" onclick="scrollToSection('categories')">Browse Categories</a>
+</section>
+
+<section class="categories" id="categories">
+<div class="card" onclick="displayProducts('Groceries')"><i class="fas fa-apple-alt"></i><h3>Groceries</h3></div>
+<div class="card" onclick="displayProducts('Footwear')"><i class="fas fa-shoe-prints"></i><h3>Footwear</h3></div>
+<div class="card" onclick="displayProducts('Beverages')"><i class="fas fa-coffee"></i><h3>Drinks & Beverages</h3></div>
+<div class="card" onclick="displayProducts('Fuel')"><i class="fas fa-gas-pump"></i><h3>Fuel & Petroleum</h3></div>
+<div class="card" onclick="displayProducts('Stationery')"><i class="fas fa-pencil-alt"></i><h3>Stationery</h3></div>
+<div class="card" onclick="displayProducts('Household')"><i class="fas fa-home"></i><h3>Household Items</h3></div>
+</section>
+
+<section class="products" id="productContainer"></section>
+
+<div class="cart-panel" id="cartPanel">
+<div class="cart-header">
+<h2>Your Cart</h2>
+<i class="fas fa-times close-btn" onclick="toggleCart()"></i>
+</div>
+<div class="cart-list" id="cartList"></div>
+<div class="cart-total" id="cartTotal">Total: NPR 0</div>
+<div class="cart-checkout"><button onclick="checkout()">Checkout</button></div>
+</div>
+
+<section class="contact-section" id="contact">
+<h2>Contact Us</h2>
+<p><i class="fas fa-phone"></i> 9868221721</p>
+<p><i class="fas fa-map-marker-alt"></i> Rajapur-5 Jhapti, Bardiya</p>
+<p>Email: jeevantraders@email.com</p>
+</section>
+
+<footer>
+<p>📍 Rajapur-5 Jhapti, Bardiya</p>
+<p>☎️ 9868221721</p>
+<p>© 2026 Jeevan Traders. All Rights Reserved</p>
+</footer>
+
+<script>
+// PRODUCT DATA UNDER CATEGORIES
+const categories = {
+"Groceries":[
+{name:"Rice 1kg",price:85,img:"https://images.unsplash.com/photo-1587316745621-3757c7076f33"},
+{name:"Mustard Oil 1L",price:150,img:"https://images.unsplash.com/photo-1585845481613-1a52273335c8"},
+{name:"Sugar 1kg",price:90,img:"https://images.unsplash.com/photo-1580910051072-415c79e75d75"},
+{name:"Lentils 1kg",price:135,img:"https://images.unsplash.com/photo-1586037762180-1c75a0df94df"}
+],
+"Footwear":[
+{name:"Sneakers (pair)",price:2400,img:"https://images.unsplash.com/photo-1542291026-7eec264c27ff"},
+{name:"Slippers (pair)",price:400,img:"https://images.unsplash.com/photo-1575656951263-4d618fcfbe40"}
+],
+"Beverages":[
+{name:"Coca Cola 1.5L",price:180,img:"https://images.unsplash.com/photo-1629203432180-71c4b9dbd17d"},
+{name:"Juice 1L",price:150,img:"https://images.unsplash.com/photo-1580910460501-8e1465cfa7a3"}
+],
+"Fuel":[
+{name:"LP Gas Cylinder",price:3800,img:"https://images.unsplash.com/photo-1601972599720-b3f90c4f4a47"}
+],
+"Stationery":[
+{name:"Notebook A4",price:120,img:"https://images.unsplash.com/photo-1588072432836-e10032774350"},
+{name:"Pen Pack",price:90,img:"https://images.unsplash.com/photo-1583324113626-70df0f4deaab"}
+],
+"Household":[
+{name:"Detergent 1kg",price:180,img:"https://images.unsplash.com/photo-1580910051072-415c79e75d75"},
+{name:"Floor Cleaner 1L",price:220,img:"https://images.unsplash.com/photo-1580910051072-415c79e75d75"}
+]
+};
+
+let cart = [];
+const container = document.getElementById("productContainer");
+const cartList = document.getElementById("cartList");
+const cartTotal = document.getElementById("cartTotal");
+const cartCount = document.getElementById("cartCount");
+
+function displayProducts(category){
+container.innerHTML="";
+categories[category].forEach((prod,index)=>{
+container.innerHTML += `
+<div class="card">
+<img src="${prod.img}">
+<div class="info">
+<h3>${prod.name}</h3>
+<button onclick="addToCart('${category}',${index})">Add to Cart</button>
+</div>
+</div>`;
+scrollToSection('productContainer');
+});
+
+// Scroll to top of products
+window.scrollBy({ top: -50, behavior: 'smooth' });
+}
+
+// CART FUNCTIONS
+function addToCart(category,index){
+let prod = categories[category][index];
+cart.push(prod);
+updateCart();
+}
+function updateCart(){
+cartList.innerHTML="";
+let sum=0;
+cart.forEach(item=>{
+sum+=item.price;
+cartList.innerHTML+=`<div class="item"><p>${item.name}</p><p>NPR ${item.price}</p></div>`;
+});
+cartTotal.innerText="Total: NPR "+sum;
+cartCount.innerText=cart.length;
+}
+function toggleCart(){ document.getElementById("cartPanel").classList.toggle("active"); }
+function scrollToSection(id){ document.getElementById(id).scrollIntoView({ behavior:'smooth' }); }
+function checkout(){ alert("Checkout not live yet."); }
+</script>
+
+</body>
+</html>
